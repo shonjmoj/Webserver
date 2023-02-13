@@ -8,18 +8,20 @@
 
 class Server
 {
-    std::vector<HttpServer> _server;
-    std::vector<int> _sockets;
+    std::vector<HttpServer> _servers;
+    std::set<int> _sockets;
     std::set<int> _ports;
 
 public:
     Server();
+    Server(HttpServer const &server);
     ~Server();
+
+    void setServer(const std::vector<HttpServer> &server);
+
 
     void createsockets();
     void start();
-
-    void setServer(const std::vector<HttpServer> &server);
     void initialisePorts();
 };
 
