@@ -8,11 +8,11 @@ class Location
 {
     bool _redirect;
     std::string _redirectTo;
-    std::string _loctionRoot;
+    std::string _locationRoot;
 
 public:
     Location();
-    Location(const std::string redirectTo, const std::string locationRoot);
+    Location(const std::string & redirectTo, const std::string & locationRoot);
     ~Location();
 
     bool getRedirect() const;
@@ -21,7 +21,7 @@ public:
 
     void setRedirect(bool redirect);
     void setRedirectTo(const std::string &redirectTo);
-    void setLoctionRoot(const std::string &locationRoot);
+    void setLocationRoot(const std::string &locationRoot);
 };
 
 #endif

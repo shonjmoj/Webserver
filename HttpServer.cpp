@@ -2,15 +2,14 @@
 
 HttpServer::HttpServer()
 {
-    this->setName("http1");
     return;
 }
 
-HttpServer::HttpServer(std::string name, int port, std::string root, Location const & location) {
+HttpServer::HttpServer(std::string name, int port, std::string root, const std::vector<Location> & location) {
     this->setName(name);
     this->setPort(port);
     this->setRoot(root);
-    this->_location.push_back(location);
+    this->_location = location;
 }
 
 HttpServer::~HttpServer()

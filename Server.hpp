@@ -14,7 +14,7 @@ class Server
 
 public:
     Server();
-    Server(HttpServer const &server);
+    Server(const std::vector<HttpServer> &server);
     ~Server();
 
     void setServer(const std::vector<HttpServer> &server);

@@ -19,7 +19,7 @@ class HttpServer
 
 public:
     HttpServer();
-    HttpServer(std::string name, int port, std::string root, Location const & location);
+    HttpServer(std::string name, int port, std::string root, const std::vector<Location> & location);
     ~HttpServer();
 
     const int &getPort() const;
