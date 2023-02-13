@@ -7,6 +7,18 @@
 #include <set>
 #include <stdio.h>
 
+#define OK 200
+#define MOVED_PERM 301
+#define BAD_REQUEST 400
+#define FORBIDDEN 403
+#define NOT_FOUND 404
+#define METHOD_NOT_ALLOWED 405
+#define PAYLOAD_LARGE 413
+#define SERVER_ERROR 500
+#define NOT_IMPLEMENTED 501
+#define BAD_GATEWAY 502
+#define NOT_SUPPORTED 505
+
 class Server
 {
     std::vector<HttpServer> _servers;
