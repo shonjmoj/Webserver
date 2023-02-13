@@ -2,6 +2,7 @@
 #define SERVER_HPP
 
 #include "HttpServer.hpp"
+#include <netinet/in.h>
 #include <vector>
 #include <set>
 #include <stdio.h>
@@ -21,8 +22,9 @@ public:
 
 
     void createsockets();
-    void start();
     void initialisePorts();
+    void listenOn();
+    void bindAddr();
 };
 
 #endif

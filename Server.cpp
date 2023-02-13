@@ -27,7 +27,7 @@ void Server::initialisePorts()
     while (it != ite)
     {
         this->_ports.insert(it->getPort());
-        printf("%s server has %d port\n", it->getName().c_str(), it->getPort());
+        printf("%s socket %d has %d port\n", it->getName().c_str(), it->getSocket() ,it->getPort());
         ++it;
     }
 }
@@ -39,17 +39,18 @@ void Server::createsockets()
     while (it != ite)
     {
         int sock = socket(AF_INET, SOCK_STREAM, 0);
-        if (sock < 0)
-            printf("Socket %d creation failed", sock);
+        if (sock < 0) {
+            printf("Socket %d creation failed\n", sock);
+        }
         else {
             it->setSocket(sock);
-            printf("%s server socket %d created\n", it->getName().c_str() ,it->getSocket());
+            printf("%s socket %d created\n", it->getName().c_str() ,it->getSocket());
         }
         ++it;
     }
 }
 
-void Server::start() {
+void Server::listenOn() {
     std::vector<HttpServer>::iterator it = this->_servers.begin();
     std::vector<HttpServer>::iterator ite = this->_servers.end();
 
@@ -58,6 +59,21 @@ void Server::start() {
             printf("%s server listening failed !\n", it->getName().c_str());
         else
             printf("%s server listening on %d port\n", it->getName().c_str(), it->getPort());
+        ++it;
+    }
+}
+
+void Server::bindAddr() {
+    std::vector<HttpServer>::iterator it = this->_servers.begin();
+    std::vector<HttpServer>::iterator ite = this->_servers.end();
+
+    while (it != ite) {
+        struct sockaddr_in tmp = it->getSockAddr();
+        if (bind(it->getSocket(), (const struct sockaddr *)&tmp, it->getSockAddrLen()) < 0) {
+            printf("%s server bind failed\n", it->getName().c_str());
+        } else {
+            printf("%s server bound successfuly\n", it->getName().c_str());
+        }
         ++it;
     }
 }
