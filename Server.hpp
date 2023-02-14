@@ -3,6 +3,7 @@
 
 #include "HttpServer.hpp"
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <vector>
 #include <set>
 #include <stdio.h>
@@ -22,21 +23,29 @@
 class Server
 {
     std::vector<HttpServer> _servers;
-    std::set<int> _sockets;
+    std::set<int> _fds;
     std::set<int> _ports;
 
+
 public:
+    typedef std::vector<HttpServer>::iterator iterator;
+    typedef std::vector<HttpServer>::iterator r_iterator;
+
+
     Server();
     Server(const std::vector<HttpServer> &server);
     ~Server();
 
+    void getFds(); 
+    void getPorts();
+
     void setServer(const std::vector<HttpServer> &server);
 
-
-    void createsockets();
+    void createSockets();
     void initialisePorts();
     void listenOn();
     void bindAddr();
+    void start();
 };
 
 #endif
