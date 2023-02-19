@@ -26,17 +26,17 @@ class Server
     std::set<int> _fds;
     std::set<int> _ports;
 
-
 public:
     typedef std::vector<HttpServer>::iterator iterator;
     typedef std::vector<HttpServer>::iterator r_iterator;
-
 
     Server();
     Server(const std::vector<HttpServer> &server);
     ~Server();
 
-    void getFds(); 
+    const Server &operator=(const Server &rhs);
+
+    void getFds();
     void getPorts();
 
     void setServer(const std::vector<HttpServer> &server);

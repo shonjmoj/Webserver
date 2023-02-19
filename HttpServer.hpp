@@ -22,11 +22,14 @@ class HttpServer
 
 public:
     HttpServer();
-    HttpServer(std::string name, int port, std::string root, const std::vector<Location> & location);
+    HttpServer(std::string name, int port, std::string root, const std::vector<Location> &location);
     ~HttpServer();
+
+    const HttpServer &operator=(const HttpServer &rhs);
 
     const int &getPort() const;
     const int &getSocket() const;
+    const std::vector<Location> &getLocation() const;
     const std::string &getRoot() const;
     const std::string &getName() const;
     struct sockaddr_in getSockAddr() const;
@@ -34,10 +37,10 @@ public:
 
     void setPort(const int &port);
     void setSocket(const int &socket);
-    void setName(const std::string & name);
+    void setName(const std::string &name);
 
     void setRoot(const std::string &root);
-    void setLocation(const std::vector<Location> &location);
+    void setLocation(const Location &location);
 };
 
 #endif

@@ -12,8 +12,10 @@ class Location
 
 public:
     Location();
-    Location(const std::string & redirectTo, const std::string & locationRoot);
+    Location(const std::string &redirectTo, const std::string &locationRoot);
     ~Location();
+
+    const Location &operator=(const Location &rhs);
 
     bool getRedirect() const;
     const std::string &getRedirectTo() const;
