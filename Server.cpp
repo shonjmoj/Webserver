@@ -12,36 +12,32 @@ Server::Server(const std::vector<HttpServer> &server)
 
 Server::~Server()
 {
+    this->_servers.clear();
+    delete[] this->_fds;
     return;
-}
-
-void Server::getFds()
-{
-    Server::iterator it = this->_servers.begin();
-    Server::r_iterator ite = this->_servers.end();
-
-    while (it != ite)
-    {
-        this->_fds.insert(it->getSocket());
-        it++;
-    }
-}
-
-void Server::getPorts()
-{
-    Server::iterator it = this->_servers.begin();
-    Server::r_iterator ite = this->_servers.end();
-
-    while (it != ite)
-    {
-        this->_fds.insert(it->getPort());
-        it++;
-    }
 }
 
 void Server::setServer(const std::vector<HttpServer> &server)
 {
     this->_servers = server;
+}
+
+void Server::setPollFd()
+{
+    Server::iterator it = this->_servers.begin();
+    Server::r_iterator ite = this->_servers.end();
+    int i = 0;
+
+    this->_fds = new struct pollfd[this->_servers.size()];
+    while (it != ite)
+    {
+        this->_fds[i].fd = it->getSocket();
+        this->_fds[i].events = POLLIN;
+        std::cout << "pollfd " << i << " has fd " << this->_fds[i].fd << std::endl;
+        i++;
+        it++;
+        this->_maxfd = i;
+    }
 }
 
 void Server::initialisePorts()
@@ -50,7 +46,6 @@ void Server::initialisePorts()
     Server::r_iterator ite = this->_servers.end();
     while (it != ite)
     {
-        this->_ports.insert(it->getPort());
         printf("%s socket %d has %d port\n", it->getName().c_str(), it->getSocket(), it->getPort());
         it++;
     }
@@ -84,9 +79,9 @@ void Server::listenOn()
     while (it != ite)
     {
         if (listen(it->getSocket(), 0) < 0)
-            printf("%s socket %d listening failed !\n", it->getName().c_str(), it->getSocket());
+            std::cout << "listen failed on " << it->getName().c_str() << std::endl;
         else
-            printf("%s socket %d listening on port %d...\n", it->getName().c_str(), it->getSocket(), it->getPort());
+            std::cout << "listen successful on " << it->getName().c_str() << " with the port " << it->getPort() << std::endl;
         it++;
     }
 }
@@ -120,12 +115,4 @@ void Server::start()
     this->initialisePorts();
     this->bindAddr();
     this->listenOn();
-    this->getFds();
-    this->getPorts();
-}
-
-const Server &Server::operator=(const Server &rhs)
-{
-    *this = rhs;
-    return *this;
 }

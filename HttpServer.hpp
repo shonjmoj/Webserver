@@ -8,13 +8,11 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <vector>
-#include "Location.hpp"
 
 class HttpServer
 {
     std::string _name;
     std::string _root;
-    std::vector<Location> _location;
     struct sockaddr_in _addr;
     socklen_t _addrlen;
     int _port;
@@ -22,15 +20,11 @@ class HttpServer
 
 public:
     HttpServer();
-    HttpServer(std::string name, int port, std::string root, const std::vector<Location> &location);
+    HttpServer(std::string name, int port);
     ~HttpServer();
-
-    const HttpServer &operator=(const HttpServer &rhs);
 
     const int &getPort() const;
     const int &getSocket() const;
-    const std::vector<Location> &getLocation() const;
-    const std::string &getRoot() const;
     const std::string &getName() const;
     struct sockaddr_in getSockAddr() const;
     socklen_t getSockAddrLen() const;
@@ -38,9 +32,6 @@ public:
     void setPort(const int &port);
     void setSocket(const int &socket);
     void setName(const std::string &name);
-
-    void setRoot(const std::string &root);
-    void setLocation(const Location &location);
 };
 
 #endif

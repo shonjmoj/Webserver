@@ -5,18 +5,15 @@ HttpServer::HttpServer()
     return;
 }
 
-HttpServer::HttpServer(std::string name, int port, std::string root, const std::vector<Location> &location)
+HttpServer::HttpServer(std::string name, int port)
 {
     this->_addrlen = sizeof(this->_addr);
     this->setName(name);
     this->setPort(port);
-    this->setRoot(root);
-    this->_location = location;
 }
 
 HttpServer::~HttpServer()
 {
-    this->_location.clear();
     return;
 }
 
@@ -28,11 +25,6 @@ const int &HttpServer::getPort() const
 const int &HttpServer::getSocket() const
 {
     return this->_socket;
-}
-
-const std::string &HttpServer::getRoot() const
-{
-    return this->_root;
 }
 
 const std::string &HttpServer::getName() const
@@ -50,11 +42,6 @@ socklen_t HttpServer::getSockAddrLen() const
     return this->_addrlen;
 }
 
-const std::vector<Location> &HttpServer::getLocation() const
-{
-    return this->_location;
-}
-
 void HttpServer::setName(const std::string &name)
 {
     this->_name = name;
@@ -68,20 +55,4 @@ void HttpServer::setPort(const int &port)
 void HttpServer::setSocket(const int &socket)
 {
     this->_socket = socket;
-}
-
-void HttpServer::setRoot(const std::string &root)
-{
-    this->_root = root;
-}
-
-void HttpServer::setLocation(const Location &location)
-{
-    this->_location.push_back(location);
-}
-
-const HttpServer &HttpServer::operator=(const HttpServer &rhs)
-{
-    *this = rhs;
-    return *this;
 }

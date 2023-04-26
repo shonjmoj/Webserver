@@ -4,6 +4,10 @@
 #include "HttpServer.hpp"
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sys/poll.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/select.h>
 #include <vector>
 #include <set>
 #include <stdio.h>
@@ -22,11 +26,11 @@
 
 class Server
 {
-    std::vector<HttpServer> _servers;
-    std::set<int> _fds;
-    std::set<int> _ports;
 
 public:
+    std::vector<HttpServer> _servers;
+    struct pollfd *_fds;
+    int _maxfd;
     typedef std::vector<HttpServer>::iterator iterator;
     typedef std::vector<HttpServer>::iterator r_iterator;
 
@@ -34,12 +38,8 @@ public:
     Server(const std::vector<HttpServer> &server);
     ~Server();
 
-    const Server &operator=(const Server &rhs);
-
-    void getFds();
-    void getPorts();
-
     void setServer(const std::vector<HttpServer> &server);
+    void setPollFd();
 
     void createSockets();
     void initialisePorts();
