@@ -33,7 +33,6 @@ void Server::setPollFd()
     {
         this->_fds[i].fd = it->getSocket();
         this->_fds[i].events = POLLIN;
-        std::cout << "pollfd " << i << " has fd " << this->_fds[i].fd << std::endl;
         i++;
         it++;
         this->_maxfd = i;
@@ -57,7 +56,12 @@ void Server::createSockets()
     Server::r_iterator ite = this->_servers.end();
     while (it != ite)
     {
-        int sock = socket(AF_INET, SOCK_STREAM, 0);
+        memset(&it->_hints, 0, sizeof(it->_hints));
+        it->_hints.ai_family = AF_INET;
+        it->_hints.ai_socktype = SOCK_STREAM;
+        it->_hints.ai_flags = AI_PASSIVE;
+        getaddrinfo(NULL, std::to_string(it->getPort()).c_str(), &it->_hints, &it->_result);
+        int sock = socket(it->_result->ai_family, it->_result->ai_socktype, it->_result->ai_protocol);
         if (sock < 0)
         {
             printf("Socket %d creation failed\n", sock);
@@ -65,6 +69,7 @@ void Server::createSockets()
         else
         {
             it->setSocket(sock);
+            fcntl(it->getSocket(), F_SETFL, O_NONBLOCK);
             printf("%s socket %d created\n", it->getName().c_str(), it->getSocket());
         }
         it++;
@@ -93,18 +98,10 @@ void Server::bindAddr()
 
     while (it != ite)
     {
-        struct sockaddr_in tmp = it->getSockAddr();
-        tmp.sin_family = AF_INET;
-        tmp.sin_port = htons(it->getPort());
-        tmp.sin_addr.s_addr = inet_addr("127.0.0.1");
-        if (bind(it->getSocket(), (const struct sockaddr *)&tmp, it->getSockAddrLen()) < 0)
-        {
+        if (bind(it->getSocket(), it->_result->ai_addr, it->_result->ai_addrlen) < 0)
             perror("bind ");
-        }
         else
-        {
             printf("%s socket %d bound successfuly\n", it->getName().c_str(), it->getSocket());
-        }
         it++;
     }
 }

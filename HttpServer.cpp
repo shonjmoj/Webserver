@@ -7,7 +7,6 @@ HttpServer::HttpServer()
 
 HttpServer::HttpServer(std::string name, int port)
 {
-    this->_addrlen = sizeof(this->_addr);
     this->setName(name);
     this->setPort(port);
 }
@@ -30,16 +29,6 @@ const int &HttpServer::getSocket() const
 const std::string &HttpServer::getName() const
 {
     return this->_name;
-}
-
-struct sockaddr_in HttpServer::getSockAddr() const
-{
-    return this->_addr;
-}
-
-socklen_t HttpServer::getSockAddrLen() const
-{
-    return this->_addrlen;
 }
 
 void HttpServer::setName(const std::string &name)

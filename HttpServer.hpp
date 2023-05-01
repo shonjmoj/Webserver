@@ -7,14 +7,13 @@
 #include <string>
 #include <sys/types.h>
 #include <netinet/in.h>
-#include <vector>
+#include <unistd.h>
+#include <netdb.h>
 
 class HttpServer
 {
     std::string _name;
     std::string _root;
-    struct sockaddr_in _addr;
-    socklen_t _addrlen;
     int _port;
     int _socket;
 
@@ -23,11 +22,12 @@ public:
     HttpServer(std::string name, int port);
     ~HttpServer();
 
+    struct addrinfo _hints;
+    struct addrinfo *_result;
+
     const int &getPort() const;
     const int &getSocket() const;
     const std::string &getName() const;
-    struct sockaddr_in getSockAddr() const;
-    socklen_t getSockAddrLen() const;
 
     void setPort(const int &port);
     void setSocket(const int &socket);

@@ -2,6 +2,8 @@
 #define SERVER_HPP
 
 #include "HttpServer.hpp"
+#include <iostream>
+#include <fstream>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/poll.h>
@@ -11,6 +13,9 @@
 #include <vector>
 #include <set>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netdb.h>
 
 #define OK 200
 #define MOVED_PERM 301
@@ -40,7 +45,6 @@ public:
 
     void setServer(const std::vector<HttpServer> &server);
     void setPollFd();
-
     void createSockets();
     void initialisePorts();
     void listenOn();
