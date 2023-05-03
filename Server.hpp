@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <sstream>
 
 #define OK 200
 #define MOVED_PERM 301
@@ -34,7 +35,9 @@ class Server
 
 public:
     std::vector<HttpServer> _servers;
-    struct pollfd *_fds;
+    struct pollfd _serverClientFds[255];
+    struct pollfd _clientFds[255];
+
     int _maxfd;
     typedef std::vector<HttpServer>::iterator iterator;
     typedef std::vector<HttpServer>::iterator r_iterator;

@@ -13,6 +13,7 @@ HttpServer::HttpServer(std::string name, int port)
 
 HttpServer::~HttpServer()
 {
+    freeaddrinfo(this->_result);
     return;
 }
 

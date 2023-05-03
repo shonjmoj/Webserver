@@ -13,7 +13,6 @@ Server::Server(const std::vector<HttpServer> &server)
 Server::~Server()
 {
     this->_servers.clear();
-    delete[] this->_fds;
     return;
 }
 
@@ -28,11 +27,10 @@ void Server::setPollFd()
     Server::r_iterator ite = this->_servers.end();
     int i = 0;
 
-    this->_fds = new struct pollfd[this->_servers.size()];
     while (it != ite)
     {
-        this->_fds[i].fd = it->getSocket();
-        this->_fds[i].events = POLLIN;
+        this->_serverClientFds[i].fd = it->getSocket();
+        this->_serverClientFds[i].events = POLLIN;
         i++;
         it++;
         this->_maxfd = i;
