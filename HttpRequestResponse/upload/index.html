@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Upload Example</title>
+  </head>
+  <body>
+    <h1>File Upload Example</h1>
+    <form enctype="multipart/form-data">
+      <input type="file" name="fileToUpload" id="fileToUpload">
+      <br><br>
+      <input type="button" value="Upload File" onclick="uploadFile()">
+    </form>
+    <br><br>
+    <div id="uploadStatus"></div>
+    <button onclick="deleteFile()">Delete File</button>
+    <script>
+      function uploadFile() {
+        var fileInput = document.getElementById('fileToUpload');
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('fileToUpload', file);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload/', true);
+        xhr.upload.onprogress = function(e) {
+          if (e.lengthComputable) {
+            var percentComplete = (e.loaded / e.total) * 100;
+            document.getElementById('uploadStatus').innerHTML = 'Upload progress: ' + percentComplete.toFixed(2) + '%';
+          }
+        };
+        xhr.onload = function() {
+          if (this.status === 201) {
+            document.getElementById('uploadStatus').innerHTML = 'Upload complete!';
+          } else {
+            document.getElementById('uploadStatus').innerHTML = 'Upload failed.';
+          }
+        };
+        xhr.send(formData);
+      }
+      
+      function deleteFile() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('DELETE', 'delete', true);
+        xhr.onload = function() {
+          if (this.status === 200) {
+            document.getElementById('uploadStatus').innerHTML = 'File deleted!';
+          } else {
+            document.getElementById('uploadStatus').innerHTML = 'File deletion failed.';
+          }
+        };
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>
