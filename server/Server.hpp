@@ -2,7 +2,7 @@
 #define SERVER_HPP
 
 #include "HttpServer.hpp"
-#include "../HttpRequest/HttpRequest.hpp"
+#include "../HttpRequestResponse/HttpRequest.hpp"
 #include <iostream>
 #include <fstream>
 #include <netinet/in.h>
